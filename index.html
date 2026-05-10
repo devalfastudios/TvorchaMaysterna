@@ -152,6 +152,38 @@
             font-size: 1.1rem;
             font-weight: 300;
             letter-spacing: 0.5px;
+            margin-bottom: 32px;
+        }
+
+        .hero-hook-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 34px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            color: #fff;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            margin-top: 8px;
+        }
+        .hero-hook-btn:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 36px rgba(0,0,0,0.35);
+        }
+        .hero-hook-btn i { font-size: 18px; animation: bounce 1.6s ease-in-out infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(4px); }
         }
 
         /* ===== CONTAINER ===== */
@@ -574,12 +606,16 @@
             <div class="blob blob-3"></div>
         </div>
         <div class="collab-badge animate__animated animate__fadeIn">
-            <span>Студія Енерго</span>
+            <span style="color:#ff3333; text-shadow: 0 0 12px rgba(255,50,50,0.6);">Студія Енерго</span>
             <span style="color:rgba(255,255,255,0.4); margin:0 4px;">×</span>
-            <span>ALFA Studios</span>
+            <span style="color:#3399ff; text-shadow: 0 0 12px rgba(50,150,255,0.6);">ALFA Studios</span>
         </div>
         <h1 class="animate__animated animate__fadeInDown">Творча Майстерня</h1>
         <p class="animate__animated animate__fadeInUp">Колаборація інженерії та цифрової творчості</p>
+        <a href="#join" class="hero-hook-btn animate__animated animate__fadeInUp animate__delay-1s" onclick="smoothScroll(event,'join')">
+            <span>🔥 Хочу навчитися крутим штукам</span>
+            <i class="material-icons">arrow_downward</i>
+        </a>
     </header>
 
     <div class="container">
@@ -588,7 +624,7 @@
         <section class="about-card reveal">
             <div class="section-title"><i class="material-icons">bolt</i> Хто ми такі?</div>
             <p>
-                Це спільний проєкт <strong>Студії Енерго</strong> та <strong>ALFA Studios</strong>. Ми об'єднали досвід у фізиці, електротехніці та розробці ПЗ, щоб створити простір для молодих мейкерів як ми. Наша мета — дати можливість кожному відчути себе інженером, незалежно від досвіду та здобути його разом з нами.
+                Це спільний проєкт <strong style="color:#ff3333;">Студії Енерго</strong> та <strong style="color:#3399ff;">ALFA Studios</strong>. Ми об'єднали досвід у фізиці, електротехніці та розробці ПЗ, щоб створити простір для молодих мейкерів як ми. Наша мета — дати можливість кожному відчути себе інженером, незалежно від досвіду та здобути його разом з нами.
             </p>
         </section>
 
@@ -742,12 +778,34 @@
 
     <footer>
         <div style="margin-bottom: 12px;">
-            <strong>Студія Енерго</strong> &amp; <strong>ALFA Studios</strong>
+            <strong style="color:#ff3333;">Студія Енерго</strong> &amp; <strong style="color:#3399ff;">ALFA Studios</strong>
         </div>
         <p>© 2026 Творча Майстерня, Розроблена ALFA Studios та Студією Енерго. м. Чернівці.</p>
     </footer>
 
     <script>
+        // ===== SMOOTH SCROLL =====
+        function smoothScroll(e, id) {
+            e.preventDefault();
+            const target = document.getElementById(id);
+            if (!target) return;
+            const start = window.scrollY;
+            const end = target.getBoundingClientRect().top + start - 40;
+            const duration = 1100;
+            let startTime = null;
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+            }
+            function step(ts) {
+                if (!startTime) startTime = ts;
+                const elapsed = ts - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                window.scrollTo(0, start + (end - start) * easeInOutCubic(progress));
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
         // ===== REVEAL ON SCROLL =====
         const reveal = () => {
             document.querySelectorAll(".reveal").forEach(el => {
